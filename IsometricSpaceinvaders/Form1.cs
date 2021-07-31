@@ -24,9 +24,9 @@ namespace IsometricSpaceinvaders
 
         Graphics g;
 
-        List<Alien> Aliens = new List<Alien>();
+        List<Alien> aliens = new List<Alien>();
 
-        List<ColliderComponent> Border = new List<ColliderComponent>();
+        List<ColliderComponent> worldBorder = new List<ColliderComponent>();
 
         Player player;
 
@@ -42,16 +42,16 @@ namespace IsometricSpaceinvaders
 
             gameGrid = isometricGrid.to2D(1);
 
-            SpawnAliens(5, 11);
-
             PlaceBorder();
 
-            player = new Player(gameGrid, Border, 15, 8);
+            SpawnAliens(5, 11);
+
+            player = new Player(gameGrid, worldBorder, 15, 8);
         }
 
         private void PlaceBorder()
         {
-            Border = Collision.placeColliders(collisionGrid, TileMapTemplates.BorderedGrid(collisionGrid));
+            worldBorder = Collision.placeColliders(collisionGrid, TileMapTemplates.BorderedGrid(collisionGrid));
         }
 
         private void SpawnAliens(int lengthX, int lengthY)
@@ -60,7 +60,7 @@ namespace IsometricSpaceinvaders
             {
                 for (int x = 0; x < lengthX; x++)
                 {
-                    Aliens.Add(new Alien(gameGrid, x, y));
+                    aliens.Add(new Alien(gameGrid, worldBorder, x, y));
                 }
             }
         }
@@ -104,6 +104,11 @@ namespace IsometricSpaceinvaders
                 player.MoveRight();
             }
 
+            foreach(Alien alien in aliens)
+            {
+                alien.Move();
+            }
+
             GamePanel.Invalidate();
         }
 
@@ -113,7 +118,7 @@ namespace IsometricSpaceinvaders
 
             developmentPlatform.Render(g);
 
-            foreach (Alien alien in Aliens)
+            foreach (Alien alien in aliens)
             {
                 alien.Render(g);
             }
