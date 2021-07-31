@@ -83,9 +83,9 @@ namespace IsometricSpaceinvaders.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap space_invader {
+        internal static System.Drawing.Bitmap alien_placeholder {
             get {
-                object obj = ResourceManager.GetObject("space_invader", resourceCulture);
+                object obj = ResourceManager.GetObject("alien_placeholder", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

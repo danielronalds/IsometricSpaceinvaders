@@ -13,15 +13,15 @@ namespace IsometricSpaceinvaders
 {
     public partial class Form1 : Form
     {
-        private IsometricGrid3D isometricGrid = new IsometricGrid3D(342, 300, 10, 2);
+        private IsometricGrid3D isometricGrid = new IsometricGrid3D(545, 198, 16, 2);
 
         private IsometricGrid2D gameGrid;
 
         private Renderer2D test;
 
-        private RenderComponent testTwo;
-
         Graphics g;
+
+        List<Alien> Aliens = new List<Alien>();
 
         public Form1()
         {
@@ -31,16 +31,30 @@ namespace IsometricSpaceinvaders
 
             gameGrid = isometricGrid.to2D(1);
 
-            testTwo = new RenderComponent(Properties.Resources.space_invader, gameGrid.getPoint(5, 5));
+            SpawnAliens(5, 11);
         }
 
-        private void panel1_Paint(object sender, PaintEventArgs e)
+        private void SpawnAliens(int lengthX, int lengthY)
+        {
+            for (int y = 0; y < lengthY; y++)
+            {
+                for (int x = 0; x < lengthX; x++)
+                {
+                    Aliens.Add(new Alien(gameGrid, x, y));
+                }
+            }
+        }
+
+        private void GamePanel_Paint(object sender, PaintEventArgs e)
         {
             g = e.Graphics;
 
             test.Render(g);
 
-            testTwo.Render(g);
+            foreach(Alien alien in Aliens)
+            {
+                alien.Render(g);
+            }
         }
     }
 }

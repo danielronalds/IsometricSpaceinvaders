@@ -49,6 +49,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Alien.cs" />
     <Compile Include="Form1.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -91,6 +92,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\space_invader.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\alien_placeholder.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
