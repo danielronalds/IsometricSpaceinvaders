@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -23,15 +24,23 @@ namespace IsometricSpaceinvaders
 
         List<Alien> Aliens = new List<Alien>();
 
+        Player player;
+
+        bool leftDown, rightDown;
+
         public Form1()
         {
             InitializeComponent();
+
+            typeof(Panel).InvokeMember("DoubleBuffered", BindingFlags.SetProperty | BindingFlags.Instance | BindingFlags.NonPublic, null, GamePanel, new object[] { true });
 
             test = new Renderer2D(isometricGrid.to2D(0), TileMapTemplates.FilledGrid(isometricGrid), Properties.Resources._64x64_isometric_tile);
 
             gameGrid = isometricGrid.to2D(1);
 
             SpawnAliens(5, 11);
+
+            player = new Player(gameGrid, 15, 8);
         }
 
         private void SpawnAliens(int lengthX, int lengthY)
@@ -45,6 +54,52 @@ namespace IsometricSpaceinvaders
             }
         }
 
+        private void Form1_KeyDown(object sender, KeyEventArgs e)
+        {
+            switch (e.KeyCode)
+            {
+                case Keys.Left:
+                    leftDown = true;
+                    rightDown = false;
+                    break;
+
+                case Keys.Right:
+                    leftDown = false;
+                    rightDown = true;
+                    break;
+            }
+        }
+
+        private void Form1_KeyUp(object sender, KeyEventArgs e)
+        {
+            switch (e.KeyCode)
+            {
+                case Keys.Left:
+                    leftDown = false;
+                    rightDown = false;
+                    break;
+
+                case Keys.Right:
+                    leftDown = false;
+                    rightDown = false;
+                    break;
+            }
+        }
+
+        private void FrameRefresh_Tick(object sender, EventArgs e)
+        {
+            if(leftDown)
+            {
+                player.MoveLeft();
+            }
+            if(rightDown)
+            {
+                player.MoveRight();
+            }
+
+            GamePanel.Invalidate();
+        }
+
         private void GamePanel_Paint(object sender, PaintEventArgs e)
         {
             g = e.Graphics;
@@ -55,6 +110,8 @@ namespace IsometricSpaceinvaders
             {
                 alien.Render(g);
             }
+
+            player.Render(g);
         }
     }
 }

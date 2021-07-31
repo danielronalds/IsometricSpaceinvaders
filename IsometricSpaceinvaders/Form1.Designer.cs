@@ -29,7 +29,9 @@ namespace IsometricSpaceinvaders
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.GamePanel = new System.Windows.Forms.Panel();
+            this.FrameRefresh = new System.Windows.Forms.Timer(this.components);
             this.SuspendLayout();
             // 
             // GamePanel
@@ -41,6 +43,12 @@ namespace IsometricSpaceinvaders
             this.GamePanel.TabIndex = 0;
             this.GamePanel.Paint += new System.Windows.Forms.PaintEventHandler(this.GamePanel_Paint);
             // 
+            // FrameRefresh
+            // 
+            this.FrameRefresh.Enabled = true;
+            this.FrameRefresh.Interval = 1;
+            this.FrameRefresh.Tick += new System.EventHandler(this.FrameRefresh_Tick);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -49,6 +57,8 @@ namespace IsometricSpaceinvaders
             this.Controls.Add(this.GamePanel);
             this.Name = "Form1";
             this.Text = "Isometric Space Invaders";
+            this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.Form1_KeyDown);
+            this.KeyUp += new System.Windows.Forms.KeyEventHandler(this.Form1_KeyUp);
             this.ResumeLayout(false);
 
         }
@@ -56,6 +66,7 @@ namespace IsometricSpaceinvaders
         #endregion
 
         private System.Windows.Forms.Panel GamePanel;
+        private System.Windows.Forms.Timer FrameRefresh;
     }
 }
 
