@@ -104,9 +104,11 @@ namespace IsometricSpaceinvaders
                 player.MoveRight();
             }
 
+            bool moveDown = false;
+
             foreach(Alien alien in aliens)
             {
-                alien.Move();
+                moveDown = alien.Move(moveDown);
             }
 
             GamePanel.Invalidate();
