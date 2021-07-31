@@ -16,13 +16,17 @@ namespace IsometricSpaceinvaders
     {
         private IsometricGrid3D isometricGrid = new IsometricGrid3D(545, 198, 16, 2);
 
+        private IsometricGrid2D collisionGrid = new IsometricGrid2D(545, 134, 18);
+
         private IsometricGrid2D gameGrid;
 
-        private Renderer2D test;
+        private Renderer2D developmentPlatform;
 
         Graphics g;
 
         List<Alien> Aliens = new List<Alien>();
+
+        List<ColliderComponent> Border = new List<ColliderComponent>();
 
         Player player;
 
@@ -34,13 +38,20 @@ namespace IsometricSpaceinvaders
 
             typeof(Panel).InvokeMember("DoubleBuffered", BindingFlags.SetProperty | BindingFlags.Instance | BindingFlags.NonPublic, null, GamePanel, new object[] { true });
 
-            test = new Renderer2D(isometricGrid.to2D(0), TileMapTemplates.FilledGrid(isometricGrid), Properties.Resources._64x64_isometric_tile);
+            developmentPlatform = new Renderer2D(isometricGrid.to2D(0), TileMapTemplates.FilledGrid(isometricGrid), Properties.Resources.Isometric_Tile_Bordered);
 
             gameGrid = isometricGrid.to2D(1);
 
             SpawnAliens(5, 11);
 
-            player = new Player(gameGrid, 15, 8);
+            PlaceBorder();
+
+            player = new Player(gameGrid, Border, 15, 8);
+        }
+
+        private void PlaceBorder()
+        {
+            Border = Collision.placeColliders(collisionGrid, TileMapTemplates.BorderedGrid(collisionGrid));
         }
 
         private void SpawnAliens(int lengthX, int lengthY)
@@ -60,11 +71,9 @@ namespace IsometricSpaceinvaders
             {
                 case Keys.Left:
                     leftDown = true;
-                    rightDown = false;
                     break;
 
                 case Keys.Right:
-                    leftDown = false;
                     rightDown = true;
                     break;
             }
@@ -76,11 +85,9 @@ namespace IsometricSpaceinvaders
             {
                 case Keys.Left:
                     leftDown = false;
-                    rightDown = false;
                     break;
 
                 case Keys.Right:
-                    leftDown = false;
                     rightDown = false;
                     break;
             }
@@ -92,7 +99,7 @@ namespace IsometricSpaceinvaders
             {
                 player.MoveLeft();
             }
-            if(rightDown)
+            else if(rightDown)
             {
                 player.MoveRight();
             }
@@ -104,9 +111,9 @@ namespace IsometricSpaceinvaders
         {
             g = e.Graphics;
 
-            test.Render(g);
+            developmentPlatform.Render(g);
 
-            foreach(Alien alien in Aliens)
+            foreach (Alien alien in Aliens)
             {
                 alien.Render(g);
             }

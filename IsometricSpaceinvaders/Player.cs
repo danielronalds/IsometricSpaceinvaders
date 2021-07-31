@@ -16,15 +16,21 @@ namespace IsometricSpaceinvaders
 
         Image playerImage = Properties.Resources.player_placeholder;
 
-        ColliderComponent colliderComponent;
+        public ColliderComponent colliderComponent;
+
+        List<ColliderComponent> boundaries;
 
         Point playerLocation;
 
         int playerSpeed = 3;
 
-        public Player(IsometricGrid2D isometricGrid, int gridX, int gridY)
+
+
+        public Player(IsometricGrid2D isometricGrid, List<ColliderComponent>worldBorder, int gridX, int gridY)
         {
             gameGrid = isometricGrid;
+
+            boundaries = worldBorder;
 
             playerLocation = gameGrid.getPoint(gridX, gridY);
 
@@ -42,12 +48,46 @@ namespace IsometricSpaceinvaders
 
         public void MoveLeft()
         {
+            Rectangle renderRectReset = renderComponent.renderRect;
+
             renderComponent.renderRect = IsometricMovement.Left(renderComponent.renderRect, playerSpeed);
+
+            colliderComponent.position = renderComponent.renderRect.Location;
+
+            // Collision Logic
+            foreach(ColliderComponent border in boundaries)
+            {
+                if(Collision.collidersColliding(colliderComponent, border, gameGrid))
+                {
+                    renderComponent.renderRect = renderRectReset;
+
+                    colliderComponent.position = renderComponent.renderRect.Location;
+
+                    break;
+                }
+            }
         }
 
         public void MoveRight()
         {
+            Rectangle renderRectReset = renderComponent.renderRect;
+
             renderComponent.renderRect = IsometricMovement.Right(renderComponent.renderRect, playerSpeed);
+
+            colliderComponent.position = renderComponent.renderRect.Location;
+
+            // Collision Logic
+            foreach (ColliderComponent border in boundaries)
+            {
+                if (Collision.collidersColliding(colliderComponent, border, gameGrid))
+                {
+                    renderComponent.renderRect = renderRectReset;
+
+                    colliderComponent.position = renderComponent.renderRect.Location;
+
+                    break;
+                }
+            }
         }
     }
 }

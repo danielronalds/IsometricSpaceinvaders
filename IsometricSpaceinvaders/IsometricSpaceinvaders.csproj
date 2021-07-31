@@ -100,5 +100,8 @@
   <ItemGroup>
     <None Include="Resources\player_sprite_2.png" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Isometric_Tile_Bordered.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
