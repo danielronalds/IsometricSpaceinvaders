@@ -61,7 +61,7 @@ namespace IsometricSpaceinvaders
             {
                 for (int x = 0; x < lengthX; x++)
                 {
-                    aliens.Add(new Alien(gameGrid, worldBorder, x, y));
+                    aliens.Add(new Alien(gameGrid, worldBorder, x, y+(15-lengthY)));
                 }
             }
         }
@@ -105,9 +105,22 @@ namespace IsometricSpaceinvaders
                 player.MoveRight();
             }
 
+            bool moveAliensDown = false;
+
             foreach(Alien alien in aliens)
             {
-                alien.Move();
+                if(!moveAliensDown)
+                {
+                    moveAliensDown = alien.Move();
+                }
+                else
+                {
+                    foreach(Alien alienToMoveDown in aliens)
+                    {
+                        alienToMoveDown.MoveDown();
+                    }
+                    break;
+                }
             }
 
             GamePanel.Invalidate();

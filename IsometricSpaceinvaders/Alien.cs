@@ -22,7 +22,7 @@ namespace IsometricSpaceinvaders
 
         int alienSpeed = 1;
 
-        bool Left = true;
+        bool Left = false;
 
         public Alien(IsometricGrid2D isometricGrid, List<ColliderComponent> worldBorder, int gridX, int gridY)
         {
@@ -65,7 +65,7 @@ namespace IsometricSpaceinvaders
                 {
                     renderComponent.renderRect = renderRectReset;
 
-                    MoveDown();
+                    //MoveDown();
 
                     return true;
                 }
