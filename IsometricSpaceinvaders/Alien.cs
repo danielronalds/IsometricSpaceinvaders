@@ -40,19 +40,8 @@ namespace IsometricSpaceinvaders
             renderComponent.Render(g);
         }
 
-        public bool Move(bool moveDown = false)
+        public bool Move()
         {
-            if(moveDown)
-            {
-                renderComponent.renderRect = IsometricMovement.Down(renderComponent.renderRect, gameGrid.TileHeight);
-
-                Left = !Left;
-
-                colliderComponent.position = renderComponent.renderRect.Location;
-
-                return true;
-            }
-
             Rectangle renderRectReset = renderComponent.renderRect;
 
             Rectangle newRectPosition;
@@ -76,17 +65,22 @@ namespace IsometricSpaceinvaders
                 {
                     renderComponent.renderRect = renderRectReset;
 
-                    renderComponent.renderRect = IsometricMovement.Down(renderRectReset, gameGrid.TileHeight);
-
-                    Left = !Left; // This might be the most efficient line of code I have ever written in my life... 
-
-                    colliderComponent.position = renderComponent.renderRect.Location;
+                    MoveDown();
 
                     return true;
                 }
             }
 
             return false;
+        }
+
+        public void MoveDown()
+        {
+            renderComponent.renderRect = IsometricMovement.Down(renderComponent.renderRect, gameGrid.TileHeight / 4);
+
+            Left = !Left; // This might be the most efficient line of code I have ever written in my life... 
+
+            colliderComponent.position = renderComponent.renderRect.Location;
         }
     }
 }

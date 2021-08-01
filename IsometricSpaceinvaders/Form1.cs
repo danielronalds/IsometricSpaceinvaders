@@ -47,6 +47,7 @@ namespace IsometricSpaceinvaders
             SpawnAliens(5, 11);
 
             player = new Player(gameGrid, worldBorder, 15, 8);
+
         }
 
         private void PlaceBorder()
@@ -104,11 +105,9 @@ namespace IsometricSpaceinvaders
                 player.MoveRight();
             }
 
-            bool moveDown = false;
-
             foreach(Alien alien in aliens)
             {
-                moveDown = alien.Move(moveDown);
+                alien.Move();
             }
 
             GamePanel.Invalidate();
@@ -118,10 +117,20 @@ namespace IsometricSpaceinvaders
         {
             g = e.Graphics;
 
-            developmentPlatform.Render(g);
+            //developmentPlatform.Render(g);
+
+            bool moveDown = false;
 
             foreach (Alien alien in aliens)
             {
+                if(moveDown)
+                {
+                    alien.MoveDown();
+                } else
+                {
+                    moveDown = alien.Move();
+                }
+
                 alien.Render(g);
             }
 
