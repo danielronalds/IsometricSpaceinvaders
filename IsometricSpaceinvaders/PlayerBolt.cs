@@ -22,7 +22,7 @@ namespace IsometricSpaceinvaders
 
         List<ColliderComponent> boundaries;
 
-        int boltSpeed = 10;
+        int boltSpeed = 6;
 
         public PlayerBolt(int spawnX, int spawnY, IsometricGrid2D colliderSize, IsometricGrid2D tempGameGrid, List<ColliderComponent> worldBorder)
         {
@@ -40,8 +40,6 @@ namespace IsometricSpaceinvaders
         public void Render(Graphics g)
         {
             renderComponent.Render(g);
-
-            colliderComponent.DrawCollider(g, Pens.Red);
         }
 
         public bool Move() // returns if it hit anything or not
