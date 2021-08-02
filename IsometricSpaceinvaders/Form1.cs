@@ -22,7 +22,7 @@ namespace IsometricSpaceinvaders
 
         private IsometricGrid2D gameGrid;
 
-        private Renderer2D developmentPlatform;
+        private Bunker bunker;
 
         Graphics g;
 
@@ -42,9 +42,9 @@ namespace IsometricSpaceinvaders
 
             typeof(Panel).InvokeMember("DoubleBuffered", BindingFlags.SetProperty | BindingFlags.Instance | BindingFlags.NonPublic, null, GamePanel, new object[] { true });
 
-            developmentPlatform = new Renderer2D(isometricGrid.to2D(0), TileMapTemplates.FilledGrid(isometricGrid), Properties.Resources.Isometric_Tile_Bordered);
-
             gameGrid = isometricGrid.to2D(1);
+
+            bunker = new Bunker(gameGrid);
 
             PlaceBorder();
 
@@ -74,7 +74,7 @@ namespace IsometricSpaceinvaders
         {
             if(bolts.Count < 1) // Allows the player to only shoot one projectile at a time, rewarding accuracy
             {
-                bolts.Add(new PlayerBolt(player.renderComponent.renderRect.X, player.renderComponent.renderRect.Y, collisionGrid, gameGrid, worldBorder));
+                bolts.Add(new PlayerBolt(player.renderComponent.renderRect.X, player.renderComponent.renderRect.Y, projectileGrid, gameGrid, worldBorder));
             }
         }
 
@@ -82,7 +82,7 @@ namespace IsometricSpaceinvaders
         {
             for (int x = 0; x < aliens.Count; x++)
             {
-                if (UpdatedCollision.collidersColliding(bolts[i].colliderComponent, aliens[x].colliderComponent, collisionGrid, gameGrid))
+                if (UpdatedCollision.collidersColliding(bolts[i].colliderComponent, aliens[x].colliderComponent, projectileGrid, gameGrid))
                 {
                     aliens.RemoveAt(x);
                     return true;
@@ -159,8 +159,6 @@ namespace IsometricSpaceinvaders
         {
             g = e.Graphics;
 
-            //developmentPlatform.Render(g);
-
             //foreach (ColliderComponent colliderComponent in worldBorder)
             //{
             //    colliderComponent.DrawCollider(g, Pens.Green);
@@ -182,6 +180,8 @@ namespace IsometricSpaceinvaders
                     bolts[i].Render(g);
                 }
             }
+
+            bunker.Render(g);
 
             player.Render(g);
         }
