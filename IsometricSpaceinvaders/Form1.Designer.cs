@@ -46,7 +46,7 @@ namespace IsometricSpaceinvaders
             // FrameRefresh
             // 
             this.FrameRefresh.Enabled = true;
-            this.FrameRefresh.Interval = 1;
+            this.FrameRefresh.Interval = 16;
             this.FrameRefresh.Tick += new System.EventHandler(this.FrameRefresh_Tick);
             // 
             // Form1

@@ -132,17 +132,23 @@ namespace IsometricSpaceinvaders
 
             //developmentPlatform.Render(g);
 
+
+            foreach (ColliderComponent colliderComponent in worldBorder)
+            {
+                colliderComponent.DrawCollider(g, Pens.Green);
+            }
+             
             bool moveDown = false;
 
             foreach (Alien alien in aliens)
             {
-                if(moveDown)
+                /*if(moveDown)
                 {
                     alien.MoveDown();
                 } else
                 {
                     moveDown = alien.Move();
-                }
+                }*/
 
                 alien.Render(g);
             }
