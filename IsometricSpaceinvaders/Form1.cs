@@ -78,6 +78,20 @@ namespace IsometricSpaceinvaders
             }
         }
 
+        private bool BulletHit(int i)
+        {
+            for (int x = 0; x < aliens.Count; x++)
+            {
+                if (UpdatedCollision.collidersColliding(bolts[i].colliderComponent, aliens[x].colliderComponent, collisionGrid, gameGrid))
+                {
+                    aliens.RemoveAt(x);
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
         private void Form1_KeyDown(object sender, KeyEventArgs e)
         {
             switch (e.KeyCode)
@@ -147,11 +161,10 @@ namespace IsometricSpaceinvaders
 
             //developmentPlatform.Render(g);
 
-
-            foreach (ColliderComponent colliderComponent in worldBorder)
-            {
-                colliderComponent.DrawCollider(g, Pens.Green);
-            }
+            //foreach (ColliderComponent colliderComponent in worldBorder)
+            //{
+            //    colliderComponent.DrawCollider(g, Pens.Green);
+            //}
              
             foreach (Alien alien in aliens)
             {
@@ -160,10 +173,11 @@ namespace IsometricSpaceinvaders
 
             for (int i = 0; i < bolts.Count; i++)
             {
-                if(bolts[i].Move())
+                if (bolts[i].Move() || BulletHit(i))
                 {
                     bolts.RemoveAt(i);
-                } else
+                }
+                else
                 {
                     bolts[i].Render(g);
                 }

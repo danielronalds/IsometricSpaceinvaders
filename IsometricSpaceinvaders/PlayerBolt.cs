@@ -40,6 +40,8 @@ namespace IsometricSpaceinvaders
         public void Render(Graphics g)
         {
             renderComponent.Render(g);
+
+            colliderComponent.DrawCollider(g, Pens.Red);
         }
 
         public bool Move() // returns if it hit anything or not
