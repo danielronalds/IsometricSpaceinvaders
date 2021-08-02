@@ -18,6 +18,8 @@ namespace IsometricSpaceinvaders
 
         private IsometricGrid2D collisionGrid = new IsometricGrid2D(545, 134, 18);
 
+        private IsometricGrid2D projectileGrid = new IsometricGrid2D(545, 198, 1, 16, 16);
+
         private IsometricGrid2D gameGrid;
 
         private Renderer2D developmentPlatform;
@@ -31,6 +33,8 @@ namespace IsometricSpaceinvaders
         Player player;
 
         bool leftDown, rightDown;
+
+        List<PlayerBolt> bolts = new List<PlayerBolt>();
 
         public Form1()
         {
@@ -66,6 +70,14 @@ namespace IsometricSpaceinvaders
             }
         }
 
+        private void PlayerShoot()
+        {
+            if(bolts.Count < 1) // Allows the player to only shoot one projectile at a time, rewarding accuracy
+            {
+                bolts.Add(new PlayerBolt(player.renderComponent.renderRect.X, player.renderComponent.renderRect.Y, collisionGrid, gameGrid, worldBorder));
+            }
+        }
+
         private void Form1_KeyDown(object sender, KeyEventArgs e)
         {
             switch (e.KeyCode)
@@ -76,6 +88,9 @@ namespace IsometricSpaceinvaders
 
                 case Keys.Right:
                     rightDown = true;
+                    break;
+                case Keys.Space:
+                    PlayerShoot();
                     break;
             }
         }
@@ -138,19 +153,20 @@ namespace IsometricSpaceinvaders
                 colliderComponent.DrawCollider(g, Pens.Green);
             }
              
-            bool moveDown = false;
-
             foreach (Alien alien in aliens)
             {
-                /*if(moveDown)
+                alien.Render(g);
+            }
+
+            for (int i = 0; i < bolts.Count; i++)
+            {
+                if(bolts[i].Move())
                 {
-                    alien.MoveDown();
+                    bolts.RemoveAt(i);
                 } else
                 {
-                    moveDown = alien.Move();
-                }*/
-
-                alien.Render(g);
+                    bolts[i].Render(g);
+                }
             }
 
             player.Render(g);

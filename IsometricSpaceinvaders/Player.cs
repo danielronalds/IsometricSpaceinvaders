@@ -10,7 +10,7 @@ namespace IsometricSpaceinvaders
 {
     class Player
     {
-        RenderComponent renderComponent;
+        public RenderComponent renderComponent;
 
         IsometricGrid2D gameGrid;
 

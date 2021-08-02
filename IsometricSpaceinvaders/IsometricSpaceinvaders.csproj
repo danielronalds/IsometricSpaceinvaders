@@ -57,8 +57,10 @@
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
     <Compile Include="Player.cs" />
+    <Compile Include="PlayerBolt.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="UpdatedCollision.cs" />
     <EmbeddedResource Include="Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>
     </EmbeddedResource>
@@ -102,6 +104,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\Isometric_Tile_Bordered.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\player_projectile_16x16.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
