@@ -51,6 +51,7 @@
   <ItemGroup>
     <Compile Include="Alien.cs" />
     <Compile Include="Bunker.cs" />
+    <Compile Include="BunkerBlock.cs" />
     <Compile Include="BunkerTileMap.cs" />
     <Compile Include="Form1.cs">
       <SubType>Form</SubType>

@@ -36,6 +36,8 @@ namespace IsometricSpaceinvaders
 
         List<PlayerBolt> bolts = new List<PlayerBolt>();
 
+        bool gameOn = false;
+
         public Form1()
         {
             InitializeComponent();
@@ -85,6 +87,22 @@ namespace IsometricSpaceinvaders
                 if (UpdatedCollision.collidersColliding(bolts[i].colliderComponent, aliens[x].colliderComponent, projectileGrid, gameGrid))
                 {
                     aliens.RemoveAt(x);
+
+                    return true;
+                }
+            }
+
+            for (int x = 0; x < bunker.blocks.Count; x++)
+            {
+                if(UpdatedCollision.collidersColliding(bolts[i].colliderComponent, bunker.blocks[x].colliderComponent, projectileGrid, gameGrid))
+                {
+                    bunker.blocks[x].health--;
+
+                    if(bunker.blocks[x].health < 1)
+                    {
+                        bunker.blocks.RemoveAt(x);
+                    }
+
                     return true;
                 }
             }
@@ -107,6 +125,8 @@ namespace IsometricSpaceinvaders
                     PlayerShoot();
                     break;
             }
+
+            gameOn = true;
         }
 
         private void Form1_KeyUp(object sender, KeyEventArgs e)
@@ -125,34 +145,45 @@ namespace IsometricSpaceinvaders
 
         private void FrameRefresh_Tick(object sender, EventArgs e)
         {
-            if(leftDown)
+            if(gameOn)
             {
-                player.MoveLeft();
-            }
-            else if(rightDown)
-            {
-                player.MoveRight();
-            }
-
-            bool moveAliensDown = false;
-
-            foreach(Alien alien in aliens)
-            {
-                if(!moveAliensDown)
+                if (leftDown)
                 {
-                    moveAliensDown = alien.Move();
+                    player.MoveLeft();
                 }
-                else
+                else if (rightDown)
                 {
-                    foreach(Alien alienToMoveDown in aliens)
+                    player.MoveRight();
+                }
+
+                bool moveAliensDown = false;
+
+                foreach (Alien alien in aliens)
+                {
+                    if (!moveAliensDown)
                     {
-                        alienToMoveDown.MoveDown();
+                        moveAliensDown = alien.Move();
                     }
-                    break;
+                    else
+                    {
+                        foreach (Alien alienToMoveDown in aliens)
+                        {
+                            alienToMoveDown.MoveDown();
+                        }
+                        break;
+                    }
                 }
-            }
 
-            GamePanel.Invalidate();
+                for (int i = 0; i < bolts.Count; i++)
+                {
+                    if (bolts[i].Move() || BulletHit(i))
+                    {
+                        bolts.RemoveAt(i);
+                    }
+                }
+
+                GamePanel.Invalidate();
+            }
         }
 
         private void GamePanel_Paint(object sender, PaintEventArgs e)
@@ -163,22 +194,15 @@ namespace IsometricSpaceinvaders
             //{
             //    colliderComponent.DrawCollider(g, Pens.Green);
             //}
-             
+
             foreach (Alien alien in aliens)
             {
                 alien.Render(g);
             }
 
-            for (int i = 0; i < bolts.Count; i++)
+            foreach (PlayerBolt bolt in bolts)
             {
-                if (bolts[i].Move() || BulletHit(i))
-                {
-                    bolts.RemoveAt(i);
-                }
-                else
-                {
-                    bolts[i].Render(g);
-                }
+                bolt.Render(g);
             }
 
             bunker.Render(g);

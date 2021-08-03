@@ -10,20 +10,43 @@ namespace IsometricSpaceinvaders
 {
     class Bunker
     {
-        Renderer2D renderer;
+        public List<BunkerBlock> blocks;
 
-        List<ColliderComponent> colliderComponents;
+        IsometricGrid2D isometricGrid;
 
         public Bunker(IsometricGrid2D gameGrid)
         {
-            renderer = new Renderer2D(gameGrid, BunkerTileMap.tileMap(), Properties.Resources._64x64_isometric_cube);
+            blocks = placeBunkers(gameGrid, BunkerTileMap.tileMap());
 
-            colliderComponents = Collision.placeColliders(gameGrid, BunkerTileMap.tileMap());
+            isometricGrid = gameGrid;
         }
 
         public void Render(Graphics g)
         {
-            renderer.Render(g);
+            foreach (BunkerBlock block in blocks)
+            {
+                block.Render(g);
+            }
+        }
+
+        private List<BunkerBlock> placeBunkers(IsometricGrid2D isometricGrid, TileMap sourceMap)
+        {
+            int length = isometricGrid.gridSize;
+
+            List<BunkerBlock> bunkers = new List<BunkerBlock>();
+
+            for (int y = 0; y < length; y++)
+            {
+                for (int x = 0; x < length; x++)
+                {
+                    if (sourceMap.getValue(x, y) != sourceMap.VoidCharacter)
+                    {
+                        bunkers.Add(new BunkerBlock(isometricGrid.getPoint(x, y), isometricGrid));
+                    }
+                }
+            }
+
+            return bunkers;
         }
     }
 }
