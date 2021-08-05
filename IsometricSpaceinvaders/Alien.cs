@@ -22,9 +22,11 @@ namespace IsometricSpaceinvaders
 
         int alienSpeed = 1;
 
+        public int score;
+
         bool Left = false;
 
-        public Alien(IsometricGrid2D isometricGrid, List<ColliderComponent> worldBorder, int gridX, int gridY)
+        public Alien(IsometricGrid2D isometricGrid, List<ColliderComponent> worldBorder, int gridX, int gridY, int alienScore)
         {
             gameGrid = isometricGrid;
 
@@ -33,6 +35,8 @@ namespace IsometricSpaceinvaders
             renderComponent = new RenderComponent(alienImage, gameGrid.getPoint(gridX, gridY));
 
             colliderComponent = new ColliderComponent(renderComponent.renderRect.Location, gameGrid);
+
+            score = alienScore;
         }
 
         public void Render(Graphics g)

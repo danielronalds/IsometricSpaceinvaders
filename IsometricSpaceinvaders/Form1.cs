@@ -38,6 +38,8 @@ namespace IsometricSpaceinvaders
 
         bool gameOn = false;
 
+        int score;
+
         public Form1()
         {
             InitializeComponent();
@@ -53,7 +55,6 @@ namespace IsometricSpaceinvaders
             SpawnAliens(5, 11);
 
             player = new Player(gameGrid, worldBorder, 15, 8);
-
         }
 
         private void PlaceBorder()
@@ -63,12 +64,30 @@ namespace IsometricSpaceinvaders
 
         private void SpawnAliens(int lengthX, int lengthY)
         {
+            int alienScore;
+
             for (int y = 0; y < lengthY; y++)
             {
                 for (int x = 0; x < lengthX; x++)
                 {
-                    aliens.Add(new Alien(gameGrid, worldBorder, x, y+(15-lengthY)));
+                    if(x < 1)
+                    {
+                        alienScore = 30;
+                    } else if (x < 3)
+                    {
+                        alienScore = 20;
+                    } else
+                    {
+                        alienScore = 10;
+                    }
+
+                    aliens.Add(new Alien(gameGrid, worldBorder, x, y+(15-lengthY), alienScore));
                 }
+            }
+
+            foreach(Alien alien in aliens)
+            {
+                Console.WriteLine(alien.score.ToString());
             }
         }
 
@@ -86,7 +105,14 @@ namespace IsometricSpaceinvaders
             {
                 if (UpdatedCollision.collidersColliding(bolts[i].colliderComponent, aliens[x].colliderComponent, projectileGrid, gameGrid))
                 {
+
+                    score += aliens[x].score;
+
+                    ScoreLbl.Text = score.ToString();
+
                     aliens.RemoveAt(x);
+
+                    //GameEffects.Shake(this, 1, 3);
 
                     return true;
                 }
