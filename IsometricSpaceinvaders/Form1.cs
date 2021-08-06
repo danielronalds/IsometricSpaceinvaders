@@ -52,7 +52,7 @@ namespace IsometricSpaceinvaders
 
             PlaceBorder();
 
-            SpawnAliens(5, 11);
+            SpawnAliens();
 
             player = new Player(gameGrid, worldBorder, 15, 8);
         }
@@ -62,9 +62,12 @@ namespace IsometricSpaceinvaders
             worldBorder = Collision.placeColliders(collisionGrid, TileMapTemplates.BorderedGrid(collisionGrid));
         }
 
-        private void SpawnAliens(int lengthX, int lengthY)
+        private void SpawnAliens()
         {
             int alienScore;
+
+            int lengthX = 5;
+            int lengthY = 11;
 
             for (int y = 0; y < lengthY; y++)
             {
@@ -133,6 +136,15 @@ namespace IsometricSpaceinvaders
                 }
             }
 
+            return false;
+        }
+
+        private bool WaveOver()
+        {
+            if(aliens.Count < 1)
+            {
+                return true;
+            }
             return false;
         }
 
@@ -206,6 +218,13 @@ namespace IsometricSpaceinvaders
                     {
                         bolts.RemoveAt(i);
                     }
+                }
+
+                if(WaveOver())
+                {
+                    SpawnAliens();
+
+                    player.lives++;
                 }
 
                 GamePanel.Invalidate();

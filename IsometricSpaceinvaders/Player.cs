@@ -24,7 +24,7 @@ namespace IsometricSpaceinvaders
 
         int playerSpeed = 3;
 
-
+        public int lives = 3;
 
         public Player(IsometricGrid2D isometricGrid, List<ColliderComponent>worldBorder, int gridX, int gridY)
         {
