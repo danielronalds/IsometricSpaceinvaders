@@ -20,6 +20,8 @@ namespace IsometricSpaceinvaders
 
         private IsometricGrid2D projectileGrid = new IsometricGrid2D(545, 198, 1, 16, 16);
 
+        private TextManager txt = new TextManager();
+
         private IsometricGrid2D gameGrid;
 
         private Bunker bunker;
@@ -43,6 +45,8 @@ namespace IsometricSpaceinvaders
         public Form1()
         {
             InitializeComponent();
+
+            txt.InitializeFonts();
 
             typeof(Panel).InvokeMember("DoubleBuffered", BindingFlags.SetProperty | BindingFlags.Instance | BindingFlags.NonPublic, null, GamePanel, new object[] { true });
 
@@ -110,8 +114,6 @@ namespace IsometricSpaceinvaders
                 {
 
                     score += aliens[x].score;
-
-                    ScoreLbl.Text = score.ToString();
 
                     aliens.RemoveAt(x);
 
@@ -220,6 +222,24 @@ namespace IsometricSpaceinvaders
                     }
                 }
 
+                int x = bunker.blocks.Count;
+
+                for (int i = 0; i < x; i++) // Removes blocks if touched by alien not working rn
+                {
+                    foreach (Alien alien in aliens)
+                    {
+                        if(i < bunker.blocks.Count)
+                        {
+                            if (Collision.collidersColliding(alien.colliderComponent, bunker.blocks[i].colliderComponent, gameGrid))
+                            {
+                                bunker.blocks.RemoveAt(i);
+
+                                x = bunker.blocks.Count;
+                            }
+                        }
+                    }
+                }
+
                 if(WaveOver())
                 {
                     SpawnAliens();
@@ -253,6 +273,8 @@ namespace IsometricSpaceinvaders
             bunker.Render(g);
 
             player.Render(g);
+
+            txt.drawScoreText(g, score, GamePanel.Size);
         }
     }
 }
