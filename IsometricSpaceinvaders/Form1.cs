@@ -38,9 +38,15 @@ namespace IsometricSpaceinvaders
 
         List<PlayerBolt> bolts = new List<PlayerBolt>();
 
+        List<AlienBolt> alienBolts = new List<AlienBolt>();
+
         bool gameOn = false;
 
         int score;
+
+        Random rnd = new Random();
+
+        int chanceOfAlienShot = 4500;
 
         public Form1()
         {
@@ -106,6 +112,15 @@ namespace IsometricSpaceinvaders
             }
         }
 
+        private void AlienShoot(Alien alien)
+        {
+            int x = alien.renderComponent.renderRect.X;
+
+            int y = alien.renderComponent.renderRect.Y;
+
+            alienBolts.Add(new AlienBolt(x, y, projectileGrid, gameGrid, worldBorder));
+        }
+
         private bool BulletHit(int i)
         {
             for (int x = 0; x < aliens.Count; x++)
@@ -130,6 +145,35 @@ namespace IsometricSpaceinvaders
                     bunker.blocks[x].health--;
 
                     if(bunker.blocks[x].health < 1)
+                    {
+                        bunker.blocks.RemoveAt(x);
+                    }
+
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        private bool AlienBulletHit(int i)
+        {
+            if(UpdatedCollision.collidersColliding(alienBolts[i].colliderComponent, player.colliderComponent, projectileGrid, gameGrid))
+            {
+                player.lives--;
+
+                GameEffects.Shake(this, 5, 5);
+
+                return true;
+            }
+
+            for (int x = 0; x < bunker.blocks.Count; x++)
+            {
+                if (UpdatedCollision.collidersColliding(alienBolts[i].colliderComponent, bunker.blocks[x].colliderComponent, projectileGrid, gameGrid))
+                {
+                    bunker.blocks[x].health--;
+
+                    if (bunker.blocks[x].health < 1)
                     {
                         bunker.blocks.RemoveAt(x);
                     }
@@ -185,6 +229,11 @@ namespace IsometricSpaceinvaders
 
         private void FrameRefresh_Tick(object sender, EventArgs e)
         {
+            if(player.lives < 1)
+            {
+                gameOn = false;
+            }
+
             if(gameOn)
             {
                 if (leftDown)
@@ -212,6 +261,11 @@ namespace IsometricSpaceinvaders
                         }
                         break;
                     }
+
+                    if (rnd.Next(0, chanceOfAlienShot) < 1)
+                    {
+                        AlienShoot(alien);
+                    }
                 }
 
                 for (int i = 0; i < bolts.Count; i++)
@@ -219,6 +273,14 @@ namespace IsometricSpaceinvaders
                     if (bolts[i].Move() || BulletHit(i))
                     {
                         bolts.RemoveAt(i);
+                    }
+                }
+
+                for (int i = 0; i < alienBolts.Count; i++)
+                {
+                    if(alienBolts[i].Move() || AlienBulletHit(i))
+                    {
+                        alienBolts.RemoveAt(i);
                     }
                 }
 
@@ -268,6 +330,11 @@ namespace IsometricSpaceinvaders
             foreach (PlayerBolt bolt in bolts)
             {
                 bolt.Render(g);
+            }
+
+            foreach (AlienBolt alienBolt in alienBolts)
+            {
+                alienBolt.Render(g);
             }
 
             bunker.Render(g);

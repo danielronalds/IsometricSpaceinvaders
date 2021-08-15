@@ -50,6 +50,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Alien.cs" />
+    <Compile Include="AlienBolt.cs" />
     <Compile Include="Bunker.cs" />
     <Compile Include="BunkerBlock.cs" />
     <Compile Include="BunkerTileMap.cs" />
@@ -112,6 +113,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\player_projectile_16x16.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\AlienBolt.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

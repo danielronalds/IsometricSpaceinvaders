@@ -10,7 +10,7 @@ namespace IsometricSpaceinvaders
 {
     class Alien
     {
-        RenderComponent renderComponent;
+        public RenderComponent renderComponent;
 
         IsometricGrid2D gameGrid;
 
