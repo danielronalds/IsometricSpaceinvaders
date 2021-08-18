@@ -32,6 +32,8 @@ namespace IsometricSpaceinvaders
 
         List<ColliderComponent> worldBorder = new List<ColliderComponent>();
 
+        List<ColliderComponent> winZone = new List<ColliderComponent>();
+
         Player player;
 
         bool leftDown, rightDown;
@@ -48,6 +50,8 @@ namespace IsometricSpaceinvaders
 
         int chanceOfAlienShot = 4500;
 
+        Size formSize, panelSize;
+
         public Form1()
         {
             InitializeComponent();
@@ -62,9 +66,20 @@ namespace IsometricSpaceinvaders
 
             PlaceBorder();
 
+            winZone = Collision.placeColliders(gameGrid, WinzoneTileMap.tileMap());
+
             SpawnAliens();
 
             player = new Player(gameGrid, worldBorder, 15, 8);
+
+            formSize = new Size(1105, 788);
+
+            panelSize = new Size(1090, 760);
+        }
+
+        private void setFormSize()
+        {
+            this.Size = formSize;
         }
 
         private void PlaceBorder()
@@ -239,7 +254,7 @@ namespace IsometricSpaceinvaders
 
         private void FrameRefresh_Tick(object sender, EventArgs e)
         {
-            if(player.lives < 1)
+            if (player.lives < 1)
             {
                 gameOn = false;
             }
@@ -275,6 +290,14 @@ namespace IsometricSpaceinvaders
                     if (rnd.Next(0, chanceOfAlienShot) < 1)
                     {
                         AlienShoot(alien);
+                    }
+
+                    foreach (ColliderComponent collider in winZone)
+                    {
+                        if(Collision.collidersColliding(alien.colliderComponent, collider, gameGrid))
+                        {
+                            gameOn = false;
+                        }
                     }
                 }
 
@@ -327,7 +350,9 @@ namespace IsometricSpaceinvaders
         {
             g = e.Graphics;
 
-            //foreach (ColliderComponent colliderComponent in worldBorder)
+            setFormSize();
+
+            //foreach (ColliderComponent colliderComponent in winZone)
             //{
             //    colliderComponent.DrawCollider(g, Pens.Green);
             //}
