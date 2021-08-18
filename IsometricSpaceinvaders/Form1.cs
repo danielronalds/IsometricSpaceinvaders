@@ -153,6 +153,16 @@ namespace IsometricSpaceinvaders
                 }
             }
 
+            for (int x = 0; x < alienBolts.Count; x++)
+            {
+                if (Collision.collidersColliding(bolts[i].colliderComponent, alienBolts[x].colliderComponent, projectileGrid))
+                {
+                    alienBolts.RemoveAt(x);
+
+                    return true;
+                }
+            }
+
             return false;
         }
 
