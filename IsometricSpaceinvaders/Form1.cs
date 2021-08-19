@@ -44,7 +44,11 @@ namespace IsometricSpaceinvaders
 
         List<AlienBolt> alienBolts = new List<AlienBolt>();
 
+        List<Panel> panels = new List<Panel>();
+
         bool gameOn = false;
+
+        int currentPanel = 1;
 
         int score;
 
@@ -57,6 +61,12 @@ namespace IsometricSpaceinvaders
 
         Size formSize, panelSize;
 
+        string binPath = Application.StartupPath + @"\highscores.txt";
+
+        Highscores highscoreManager;
+
+        string playerName = "Daniel";
+
         public Form1()
         {
             InitializeComponent();
@@ -65,6 +75,30 @@ namespace IsometricSpaceinvaders
 
             typeof(Panel).InvokeMember("DoubleBuffered", BindingFlags.SetProperty | BindingFlags.Instance | BindingFlags.NonPublic, null, GamePanel, new object[] { true });
 
+            typeof(Panel).InvokeMember("DoubleBuffered", BindingFlags.SetProperty | BindingFlags.Instance | BindingFlags.NonPublic, null, GameOverPnl, new object[] { true });
+
+            highscoreManager = new Highscores(binPath);
+
+            panels.Add(GamePanel);
+            panels.Add(GameOverPnl);
+
+            ResetGame();
+
+            SetPanel();
+        }
+
+        private void setFormSize()
+        {
+            this.Size = formSize;
+        }
+
+        private void PlaceBorder()
+        {
+            worldBorder = Collision.placeColliders(collisionGrid, TileMapTemplates.BorderedGrid(collisionGrid));
+        }
+
+        private void ResetGame()
+        {
             gameGrid = isometricGrid.to2D(1);
 
             bunker = new Bunker(gameGrid);
@@ -82,20 +116,14 @@ namespace IsometricSpaceinvaders
             panelSize = new Size(1090, 760);
 
             renderer = new Renderer2D(gameGrid, TileMapTemplates.FilledGrid(gameGrid), Properties.Resources.tilemarker);
-        }
 
-        private void setFormSize()
-        {
-            this.Size = formSize;
-        }
-
-        private void PlaceBorder()
-        {
-            worldBorder = Collision.placeColliders(collisionGrid, TileMapTemplates.BorderedGrid(collisionGrid));
+            score = 0;
         }
 
         private void SpawnAliens()
         {
+            aliens.Clear();
+
             int alienScore;
 
             int lengthX = 5;
@@ -228,21 +256,24 @@ namespace IsometricSpaceinvaders
 
         private void Form1_KeyDown(object sender, KeyEventArgs e)
         {
-            switch (e.KeyCode)
+            if(currentPanel == 0)
             {
-                case Keys.Left:
-                    leftDown = true;
-                    break;
+                switch (e.KeyCode)
+                {
+                    case Keys.Left:
+                        leftDown = true;
+                        break;
 
-                case Keys.Right:
-                    rightDown = true;
-                    break;
-                case Keys.Space:
-                    PlayerShoot();
-                    break;
+                    case Keys.Right:
+                        rightDown = true;
+                        break;
+                    case Keys.Space:
+                        PlayerShoot();
+                        break;
+                }
+
+                gameOn = true;
             }
-
-            gameOn = true;
         }
 
         private void Form1_KeyUp(object sender, KeyEventArgs e)
@@ -259,14 +290,23 @@ namespace IsometricSpaceinvaders
             }
         }
 
+        private void PlayGame(object sender, EventArgs e)
+        {
+            ResetGame();
+            currentPanel = 0;
+            SetPanel();
+        }
+
         private void FrameRefresh_Tick(object sender, EventArgs e)
         {
-            if (player.lives < 1)
+            if (player.lives < 1 && gameOn)
             {
-                gameOn = false;
+                EndGame();
             }
 
-            if(gameOn)
+            SetPanel();
+
+            if (gameOn && currentPanel == 0)
             {
                 if (leftDown)
                 {
@@ -293,7 +333,7 @@ namespace IsometricSpaceinvaders
                     {
                         if (Collision.collidersColliding(alien.colliderComponent, collider, gameGrid))
                         {
-                            gameOn = false;
+                            EndGame();
                         }
                     }
                 }
@@ -354,6 +394,43 @@ namespace IsometricSpaceinvaders
                 }
 
                 GamePanel.Invalidate();
+            }
+        }
+
+        private void EndGame()
+        {
+            gameOn = false;
+            currentPanel = 1;
+            highscoreManager.CheckTopTen(score, playerName);
+        }
+
+        private void GameOverPnl_Paint(object sender, PaintEventArgs e)
+        {
+            g = e.Graphics;
+
+            highscoreManager.DrawHighscores(g, panelSize, score, playerName);
+        }
+
+        private void SetPanel()
+        {
+            for (int i = 0; i < panels.Count; i++)
+            {
+                if(panels[i] == panels[currentPanel])
+                {
+                    panels[i].Size = panelSize;
+                    panels[i].Location = new Point(0, 0);
+                    if(currentPanel == 1)
+                    {
+                        GameOverButton.Enabled = true;
+                        panels[i].Invalidate();
+                    } else
+                    {
+                        GameOverButton.Enabled = false;
+                    }
+                } else
+                {
+                    panels[i].Left += 1000;
+                }
             }
         }
 

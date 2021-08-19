@@ -33,7 +33,7 @@ namespace IsometricSpaceinvaders
             System.Runtime.InteropServices.Marshal.FreeCoTaskMem(fontPtr);
 
             mainFont = new Font(fonts.Families[0], 36.0F);
-            secondaryFont = new Font(fonts.Families[0], 11.0F);
+            secondaryFont = new Font(fonts.Families[0], 14.0F);
             labelFont = new Font(fonts.Families[0], 20.0F);
         }
 
