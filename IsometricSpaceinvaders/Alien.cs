@@ -24,6 +24,8 @@ namespace IsometricSpaceinvaders
 
         public int score;
 
+        int target;
+
         bool Left = false;
 
         public Alien(IsometricGrid2D isometricGrid, List<ColliderComponent> worldBorder, int gridX, int gridY, int alienScore)
@@ -37,6 +39,8 @@ namespace IsometricSpaceinvaders
             colliderComponent = new ColliderComponent(renderComponent.renderRect.Location, gameGrid);
 
             score = alienScore;
+
+            SetTarget();
         }
 
         public void Render(Graphics g)
@@ -44,7 +48,12 @@ namespace IsometricSpaceinvaders
             renderComponent.Render(g);
         }
 
-        public bool Move()
+        private void SetTarget()
+        {
+            target = (gameGrid.TileHeight / 4) * 5;
+        }
+
+        public void Move()
         {
             Rectangle renderRectReset = renderComponent.renderRect;
 
@@ -62,23 +71,16 @@ namespace IsometricSpaceinvaders
 
             colliderComponent.position = renderComponent.renderRect.Location;
 
-            // Collision Logic
-            foreach (ColliderComponent border in boundaries)
+            target -= alienSpeed; 
+
+            if(target <= 0)
             {
-                if (Collision.collidersColliding(colliderComponent, border, gameGrid))
-                {
-                    renderComponent.renderRect = renderRectReset;
-
-                    //MoveDown();
-
-                    return true;
-                }
+                MoveDown();
+                SetTarget();
             }
-
-            return false;
         }
 
-        public void MoveDown()
+        private void MoveDown()
         {
             renderComponent.renderRect = IsometricMovement.Down(renderComponent.renderRect, gameGrid.TileHeight / 4);
 

@@ -20,6 +20,8 @@ namespace IsometricSpaceinvaders
 
         private IsometricGrid2D projectileGrid = new IsometricGrid2D(545, 198, 1, 16, 16);
 
+        Renderer2D renderer;
+
         private TextManager txt = new TextManager();
 
         private IsometricGrid2D gameGrid;
@@ -45,6 +47,9 @@ namespace IsometricSpaceinvaders
         bool gameOn = false;
 
         int score;
+
+        int alienMoveRate = 0;
+        int alienMaxMoveRate = 5;
 
         Random rnd = new Random();
 
@@ -75,6 +80,8 @@ namespace IsometricSpaceinvaders
             formSize = new Size(1105, 788);
 
             panelSize = new Size(1090, 760);
+
+            renderer = new Renderer2D(gameGrid, TileMapTemplates.FilledGrid(gameGrid), Properties.Resources.tilemarker);
         }
 
         private void setFormSize()
@@ -109,7 +116,7 @@ namespace IsometricSpaceinvaders
                         alienScore = 10;
                     }
 
-                    aliens.Add(new Alien(gameGrid, worldBorder, x, y+(15-lengthY), alienScore));
+                    aliens.Add(new Alien(gameGrid, worldBorder, x, y+(16-lengthY), alienScore));
                 }
             }
 
@@ -270,21 +277,11 @@ namespace IsometricSpaceinvaders
                     player.MoveRight();
                 }
 
-                bool moveAliensDown = false;
-
                 foreach (Alien alien in aliens)
                 {
-                    if (!moveAliensDown)
+                    if(alienMoveRate == alienMaxMoveRate)
                     {
-                        moveAliensDown = alien.Move();
-                    }
-                    else
-                    {
-                        foreach (Alien alienToMoveDown in aliens)
-                        {
-                            alienToMoveDown.MoveDown();
-                        }
-                        break;
+                        alien.Move();
                     }
 
                     if (rnd.Next(0, chanceOfAlienShot) < 1)
@@ -294,11 +291,19 @@ namespace IsometricSpaceinvaders
 
                     foreach (ColliderComponent collider in winZone)
                     {
-                        if(Collision.collidersColliding(alien.colliderComponent, collider, gameGrid))
+                        if (Collision.collidersColliding(alien.colliderComponent, collider, gameGrid))
                         {
                             gameOn = false;
                         }
                     }
+                }
+
+                if(alienMoveRate != alienMaxMoveRate)
+                {
+                    alienMoveRate++;
+                } else
+                {
+                    alienMoveRate = 0;
                 }
 
                 for (int i = 0; i < bolts.Count; i++)
@@ -319,7 +324,7 @@ namespace IsometricSpaceinvaders
 
                 int x = bunker.blocks.Count;
 
-                for (int i = 0; i < x; i++) // Removes blocks if touched by alien not working rn
+                for (int i = 0; i < x; i++) // Removes blocks if touched by alien
                 {
                     foreach (Alien alien in aliens)
                     {
@@ -340,6 +345,12 @@ namespace IsometricSpaceinvaders
                     SpawnAliens();
 
                     player.lives++;
+
+                    if(alienMaxMoveRate != 0)
+                    {
+                        alienMaxMoveRate--;
+                        alienMoveRate = 0;
+                    }
                 }
 
                 GamePanel.Invalidate();
@@ -356,6 +367,8 @@ namespace IsometricSpaceinvaders
             //{
             //    colliderComponent.DrawCollider(g, Pens.Green);
             //}
+
+            //renderer.Render(g);
 
             foreach (Alien alien in aliens)
             {
