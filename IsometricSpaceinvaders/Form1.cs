@@ -390,6 +390,8 @@ namespace IsometricSpaceinvaders
             player.Render(g);
 
             txt.drawScoreText(g, score, GamePanel.Size);
+
+            txt.drawLivesText(g, player.lives, GamePanel.Size);
         }
     }
 }

@@ -50,7 +50,7 @@ namespace IsometricSpaceinvaders
             textRectSize.Width += 1;
 
             y = 12;
-            x = 12;
+            x = Canvas.Width - textRectSize.Width - 12;
 
             textLocation = new Point(x, y);
 
@@ -58,60 +58,29 @@ namespace IsometricSpaceinvaders
 
             g.DrawString(text, mainFont, Brushes.White, textLocation);
 
-            // Caption
-
-            //text = "CURRENT SCORE";
-
-            //textRectSize = g.MeasureString(text, secondaryFont).ToSize();
-            //textRectSize.Width += 1;
-
-            //y = fontY - textRectSize.Height;
-            //x = ((Canvas.Width / 7) * 2) - (textRectSize.Width / 2);
-
-            //textLocation = new Point(x, y);
-
-            //textRect = new Rectangle(textLocation, textRectSize);
-
-            //g.DrawString(text, secondaryFont, Brushes.White, textLocation);
-
         }
 
-        //public void drawHighScoreText(Graphics g, int Score, Size Canvas)
-        //{
-        //    Rectangle textRect;
+        public void drawLivesText(Graphics g, int lives, Size Canvas)
+        {
+            Rectangle textRect;
 
-        //    string text = "" + Score;
+            string text = "LIVES: " + lives;
 
-        //    Point textLocation;
-        //    int x, y;
+            Point textLocation;
+            int x, y;
 
-        //    Size textRectSize = g.MeasureString(text, mainFont).ToSize();
-        //    textRectSize.Width += 1;
+            Size textRectSize = g.MeasureString(text, labelFont).ToSize();
+            textRectSize.Width += 1;
 
-        //    y = fontY;
-        //    x = ((Canvas.Width / 7) * 5) - (textRectSize.Width / 2);
+            y = 12;
+            x = 12;
 
-        //    textLocation = new Point(x, y);
+            textLocation = new Point(x, y);
 
-        //    textRect = new Rectangle(textLocation, textRectSize);
+            textRect = new Rectangle(textLocation, textRectSize);
 
-        //    g.DrawString(text, mainFont, Brushes.White, textLocation);
+            g.DrawString(text, labelFont, Brushes.White, textLocation);
 
-        //    // Caption
-
-        //    text = "HIGH SCORE";
-
-        //    textRectSize = g.MeasureString(text, secondaryFont).ToSize();
-        //    textRectSize.Width += 1;
-
-        //    y = fontY - textRectSize.Height;
-        //    x = ((Canvas.Width / 7) * 5) - (textRectSize.Width / 2);
-
-        //    textLocation = new Point(x, y);
-
-        //    textRect = new Rectangle(textLocation, textRectSize);
-
-        //    g.DrawString(text, secondaryFont, Brushes.White, textLocation);
-        //}
+        }
     }
 }
