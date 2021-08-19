@@ -48,7 +48,7 @@ namespace IsometricSpaceinvaders
 
         bool gameOn = false;
 
-        int currentPanel = 1;
+        int currentPanel = 2;
 
         int score;
 
@@ -81,10 +81,17 @@ namespace IsometricSpaceinvaders
 
             panels.Add(GamePanel);
             panels.Add(GameOverPnl);
+            panels.Add(StartPnl);
+
+            formSize = new Size(1105, 788);
+
+            panelSize = new Size(1090, 760);
 
             ResetGame();
 
             SetPanel();
+
+            
         }
 
         private void setFormSize()
@@ -110,10 +117,6 @@ namespace IsometricSpaceinvaders
             SpawnAliens();
 
             player = new Player(gameGrid, worldBorder, 15, 8);
-
-            formSize = new Size(1105, 788);
-
-            panelSize = new Size(1090, 760);
 
             renderer = new Renderer2D(gameGrid, TileMapTemplates.FilledGrid(gameGrid), Properties.Resources.tilemarker);
 
@@ -292,8 +295,11 @@ namespace IsometricSpaceinvaders
 
         private void PlayGame(object sender, EventArgs e)
         {
-            ResetGame();
+            playerName = PlayerNameTxtBox.Text;
+
             currentPanel = 0;
+
+            ResetGame();
             SetPanel();
         }
 
@@ -404,11 +410,9 @@ namespace IsometricSpaceinvaders
             highscoreManager.CheckTopTen(score, playerName);
         }
 
-        private void GameOverPnl_Paint(object sender, PaintEventArgs e)
+        private void PlayerNameTxtBox_KeyPress(object sender, KeyPressEventArgs e)
         {
-            g = e.Graphics;
-
-            highscoreManager.DrawHighscores(g, panelSize, score, playerName);
+            e.Handled = !(char.IsLetter(e.KeyChar) || e.KeyChar == (char)Keys.Back);
         }
 
         private void SetPanel()
@@ -419,19 +423,35 @@ namespace IsometricSpaceinvaders
                 {
                     panels[i].Size = panelSize;
                     panels[i].Location = new Point(0, 0);
-                    if(currentPanel == 1)
+                    if(currentPanel == 1) // Gameover screen
                     {
                         GameOverButton.Enabled = true;
+                        PlayerNameTxtBox.Enabled = false;
+                        StartScreenButton.Enabled = false;
                         panels[i].Invalidate();
-                    } else
+                    } else if(currentPanel == 2) // Start screen
                     {
+                        PlayerNameTxtBox.Enabled = true;
                         GameOverButton.Enabled = false;
+                        StartScreenButton.Enabled = true;
+                    } else // Actual game screen
+                    {
+                        PlayerNameTxtBox.Enabled = false;
+                        GameOverButton.Enabled = false;
+                        StartScreenButton.Enabled = false;
                     }
                 } else
                 {
                     panels[i].Left += 1000;
                 }
             }
+        }
+
+        private void GameOverPnl_Paint(object sender, PaintEventArgs e)
+        {
+            g = e.Graphics;
+
+            highscoreManager.DrawHighscores(g, panelSize, score, playerName);
         }
 
         private void GamePanel_Paint(object sender, PaintEventArgs e)
