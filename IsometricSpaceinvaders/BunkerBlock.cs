@@ -10,7 +10,7 @@ namespace IsometricSpaceinvaders
 {
     class BunkerBlock
     {
-        public ColliderComponent colliderComponent;
+        public ColliderComponent colliderComponent; // Allows collision in the isometric plane
 
         RenderComponent renderComponent;
 
@@ -18,14 +18,14 @@ namespace IsometricSpaceinvaders
 
         public int health = 5;
 
-        public BunkerBlock(Point location, IsometricGrid2D isometricGrid)
+        public BunkerBlock(Point location, IsometricGrid2D isometricGrid) // Constructor
         {
             colliderComponent = new ColliderComponent(location, isometricGrid);
 
             renderComponent = new RenderComponent(bunkerImage, location);
         }
 
-        public void Render(Graphics g)
+        public void Render(Graphics g) // Draws Bunker block
         {
             renderComponent.Render(g);
         }

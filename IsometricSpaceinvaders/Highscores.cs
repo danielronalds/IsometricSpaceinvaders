@@ -16,7 +16,7 @@ namespace IsometricSpaceinvaders
 
         string binPath;
 
-        public Highscores(string binPathTmp)
+        public Highscores(string binPathTmp) // Constructor, binPathTmp is for accesing highscores.txt
         {
             binPath = binPathTmp;
 
@@ -34,7 +34,7 @@ namespace IsometricSpaceinvaders
             txt.InitializeFonts();
         }
 
-        public void SaveHighScores()
+        public void SaveHighScores() // Writes to highscores.txt with updated scores
         {
             StringBuilder builder = new StringBuilder();
             foreach (Highscore score in highScores)
@@ -45,7 +45,7 @@ namespace IsometricSpaceinvaders
             File.WriteAllText(binPath, builder.ToString());
         }
 
-        public void CheckTopTen(int playerScore, string playerName)
+        public void CheckTopTen(int playerScore, string playerName) // Checks the currently saved highscores to see if the player has beaten them, and then saves the new score if they have
         {
             int lowest_score = highScores[(highScores.Count - 1)].Score;
 
@@ -60,7 +60,7 @@ namespace IsometricSpaceinvaders
 
         }
 
-        public void DrawHighscores(Graphics g, Size Panel, int playerScore, string playerName)
+        public void DrawHighscores(Graphics g, Size Panel, int playerScore, string playerName) // Draws the highscores on the gameover screen
         {
             Rectangle textRect;
 

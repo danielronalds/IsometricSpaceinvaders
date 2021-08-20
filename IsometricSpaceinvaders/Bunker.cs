@@ -14,14 +14,14 @@ namespace IsometricSpaceinvaders
 
         IsometricGrid2D isometricGrid;
 
-        public Bunker(IsometricGrid2D gameGrid)
+        public Bunker(IsometricGrid2D gameGrid) // Constructor
         {
             blocks = placeBunkers(gameGrid, BunkerTileMap.tileMap());
 
             isometricGrid = gameGrid;
         }
 
-        public void Render(Graphics g)
+        public void Render(Graphics g) // Draws Bunkers in the correct order to maintain the isometric perspective
         {
             foreach (BunkerBlock block in blocks)
             {
@@ -29,7 +29,7 @@ namespace IsometricSpaceinvaders
             }
         }
 
-        private List<BunkerBlock> placeBunkers(IsometricGrid2D isometricGrid, TileMap sourceMap)
+        private List<BunkerBlock> placeBunkers(IsometricGrid2D isometricGrid, TileMap sourceMap) // Function that converts the string array tilemap into bunker objects to render and interact with
         {
             int length = isometricGrid.gridSize;
 

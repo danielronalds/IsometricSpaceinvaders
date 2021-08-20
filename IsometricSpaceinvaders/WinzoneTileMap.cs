@@ -9,7 +9,7 @@ namespace IsometricSpaceinvaders
 {
     static class WinzoneTileMap
     {
-        public static TileMap tileMap()
+        public static TileMap tileMap() // Tilemap for the line of colliders that triggers the EndGame() function once an alien comes in contact
         {
             TileMap Output;
 

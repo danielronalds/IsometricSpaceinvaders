@@ -24,7 +24,7 @@ namespace IsometricSpaceinvaders
 
         int boltSpeed = 6;
 
-        public PlayerBolt(int spawnX, int spawnY, IsometricGrid2D colliderSize, IsometricGrid2D tempGameGrid, List<ColliderComponent> worldBorder)
+        public PlayerBolt(int spawnX, int spawnY, IsometricGrid2D colliderSize, IsometricGrid2D tempGameGrid, List<ColliderComponent> worldBorder) // Constructor for playerbolts
         {
             boundaries = worldBorder;
 
@@ -37,12 +37,12 @@ namespace IsometricSpaceinvaders
             colliderComponent = new ColliderComponent(spawnX, spawnY, colliderSize);
         }
 
-        public void Render(Graphics g)
+        public void Render(Graphics g) // Draws projectile
         {
             renderComponent.Render(g);
         }
 
-        public bool Move() // returns if it hit anything or not
+        public bool Move() // Moves the projectile, returns true/false bool if it hit anything or not
         {
             Rectangle renderRectReset = renderComponent.renderRect;
 

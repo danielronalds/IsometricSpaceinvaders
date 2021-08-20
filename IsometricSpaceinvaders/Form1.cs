@@ -67,7 +67,7 @@ namespace IsometricSpaceinvaders
 
         string playerName = "Daniel";
 
-        public Form1()
+        public Form1() // Start function
         {
             InitializeComponent();
 
@@ -94,17 +94,17 @@ namespace IsometricSpaceinvaders
             
         }
 
-        private void setFormSize()
+        private void setFormSize() // Function that sets the form size every screen refresh, prevents the players from seeing other inactive panels by fixing the form size
         {
             this.Size = formSize;
         }
 
-        private void PlaceBorder()
+        private void PlaceBorder() // Places colliders around the game grid
         {
             worldBorder = Collision.placeColliders(collisionGrid, TileMapTemplates.BorderedGrid(collisionGrid));
         }
 
-        private void ResetGame()
+        private void ResetGame() // Resets the game
         {
             gameGrid = isometricGrid.to2D(1);
 
@@ -123,7 +123,7 @@ namespace IsometricSpaceinvaders
             score = 0;
         }
 
-        private void SpawnAliens()
+        private void SpawnAliens() // Spawns the block of aliens at the start of the game/each wave
         {
             aliens.Clear();
 
@@ -136,7 +136,7 @@ namespace IsometricSpaceinvaders
             {
                 for (int x = 0; x < lengthX; x++)
                 {
-                    if(x < 1)
+                    if(x < 1) // Gives each alien a different point value based on their location with aliens at the back having a higher point score
                     {
                         alienScore = 30;
                     } else if (x < 3)
@@ -157,7 +157,7 @@ namespace IsometricSpaceinvaders
             }
         }
 
-        private void PlayerShoot()
+        private void PlayerShoot() // Function to shoot a projectile from the players current position
         {
             if(bolts.Count < 1) // Allows the player to only shoot one projectile at a time, rewarding accuracy
             {
@@ -165,7 +165,7 @@ namespace IsometricSpaceinvaders
             }
         }
 
-        private void AlienShoot(Alien alien)
+        private void AlienShoot(Alien alien) // Function to shoot a projectile from the selected aliens current position
         {
             int x = alien.renderComponent.renderRect.X;
 
@@ -174,9 +174,9 @@ namespace IsometricSpaceinvaders
             alienBolts.Add(new AlienBolt(x, y, projectileGrid, gameGrid, worldBorder));
         }
 
-        private bool BulletHit(int i)
+        private bool BulletHit(int i) // Checks to see if the player projectile has hit anything, returns a bool
         {
-            for (int x = 0; x < aliens.Count; x++)
+            for (int x = 0; x < aliens.Count; x++) // Hit with alien
             {
                 if (UpdatedCollision.collidersColliding(bolts[i].colliderComponent, aliens[x].colliderComponent, projectileGrid, gameGrid))
                 {
@@ -191,7 +191,7 @@ namespace IsometricSpaceinvaders
                 }
             }
 
-            for (int x = 0; x < bunker.blocks.Count; x++)
+            for (int x = 0; x < bunker.blocks.Count; x++) // Hit with bunker
             {
                 if(UpdatedCollision.collidersColliding(bolts[i].colliderComponent, bunker.blocks[x].colliderComponent, projectileGrid, gameGrid))
                 {
@@ -206,7 +206,7 @@ namespace IsometricSpaceinvaders
                 }
             }
 
-            for (int x = 0; x < alienBolts.Count; x++)
+            for (int x = 0; x < alienBolts.Count; x++) // Hit with alien bolt
             {
                 if (Collision.collidersColliding(bolts[i].colliderComponent, alienBolts[x].colliderComponent, projectileGrid))
                 {
@@ -219,9 +219,9 @@ namespace IsometricSpaceinvaders
             return false;
         }
 
-        private bool AlienBulletHit(int i)
+        private bool AlienBulletHit(int i) // Checks if selected alien bolt has hit anything, returns a bool
         {
-            if(UpdatedCollision.collidersColliding(alienBolts[i].colliderComponent, player.colliderComponent, projectileGrid, gameGrid))
+            if(UpdatedCollision.collidersColliding(alienBolts[i].colliderComponent, player.colliderComponent, projectileGrid, gameGrid)) // Hit with player
             {
                 player.lives--;
 
@@ -230,7 +230,7 @@ namespace IsometricSpaceinvaders
                 return true;
             }
 
-            for (int x = 0; x < bunker.blocks.Count; x++)
+            for (int x = 0; x < bunker.blocks.Count; x++) // Hit with Bunker
             {
                 if (UpdatedCollision.collidersColliding(alienBolts[i].colliderComponent, bunker.blocks[x].colliderComponent, projectileGrid, gameGrid))
                 {
@@ -248,7 +248,7 @@ namespace IsometricSpaceinvaders
             return false;
         }
 
-        private bool WaveOver()
+        private bool WaveOver() // Checks if all aliens in a wave have been destroyed and returns a bool
         {
             if(aliens.Count < 1)
             {
@@ -257,7 +257,7 @@ namespace IsometricSpaceinvaders
             return false;
         }
 
-        private void Form1_KeyDown(object sender, KeyEventArgs e)
+        private void Form1_KeyDown(object sender, KeyEventArgs e) // Keydown event 
         {
             if(currentPanel == 0)
             {
@@ -279,7 +279,7 @@ namespace IsometricSpaceinvaders
             }
         }
 
-        private void Form1_KeyUp(object sender, KeyEventArgs e)
+        private void Form1_KeyUp(object sender, KeyEventArgs e) // Keyup event
         {
             switch (e.KeyCode)
             {
@@ -293,7 +293,7 @@ namespace IsometricSpaceinvaders
             }
         }
 
-        private void PlayGame(object sender, EventArgs e)
+        private void PlayGame(object sender, EventArgs e) // Event called by the restart game button and the play game button that shifts the current panel to the game panel
         {
             playerName = PlayerNameTxtBox.Text;
 
@@ -301,11 +301,13 @@ namespace IsometricSpaceinvaders
 
             ResetGame();
             SetPanel();
+
+            MessageBox.Show("Spacebar to shoot, left and right arrow keys to move left and right respectively. Enjoy!", "Game instructions");
         }
 
-        private void FrameRefresh_Tick(object sender, EventArgs e)
+        private void FrameRefresh_Tick(object sender, EventArgs e) // Frame refresh time, runs every 16ms resulting in a frame rate of 60 fps
         {
-            if (player.lives < 1 && gameOn)
+            if (player.lives < 1 && gameOn) // Checks to see if the game is over 
             {
                 EndGame();
             }
@@ -335,7 +337,7 @@ namespace IsometricSpaceinvaders
                         AlienShoot(alien);
                     }
 
-                    foreach (ColliderComponent collider in winZone)
+                    foreach (ColliderComponent collider in winZone) // Checks to see if the game is over 
                     {
                         if (Collision.collidersColliding(alien.colliderComponent, collider, gameGrid))
                         {
@@ -344,7 +346,7 @@ namespace IsometricSpaceinvaders
                     }
                 }
 
-                if(alienMoveRate != alienMaxMoveRate)
+                if(alienMoveRate != alienMaxMoveRate) // This allows the aliens to slow down initially
                 {
                     alienMoveRate++;
                 } else
@@ -352,7 +354,7 @@ namespace IsometricSpaceinvaders
                     alienMoveRate = 0;
                 }
 
-                for (int i = 0; i < bolts.Count; i++)
+                for (int i = 0; i < bolts.Count; i++) // Player bolts
                 {
                     if (bolts[i].Move() || BulletHit(i))
                     {
@@ -360,7 +362,7 @@ namespace IsometricSpaceinvaders
                     }
                 }
 
-                for (int i = 0; i < alienBolts.Count; i++)
+                for (int i = 0; i < alienBolts.Count; i++) // Alien Bolts
                 {
                     if(alienBolts[i].Move() || AlienBulletHit(i))
                     {
@@ -386,7 +388,7 @@ namespace IsometricSpaceinvaders
                     }
                 }
 
-                if(WaveOver())
+                if(WaveOver()) // Wave over check
                 {
                     SpawnAliens();
 
@@ -403,19 +405,19 @@ namespace IsometricSpaceinvaders
             }
         }
 
-        private void EndGame()
+        private void EndGame() // Ends the game and switches to the game over screen
         {
             gameOn = false;
             currentPanel = 1;
             highscoreManager.CheckTopTen(score, playerName);
         }
 
-        private void PlayerNameTxtBox_KeyPress(object sender, KeyPressEventArgs e)
+        private void PlayerNameTxtBox_KeyPress(object sender, KeyPressEventArgs e) // Prevents anything but letters being typed as the username of the player
         {
             e.Handled = !(char.IsLetter(e.KeyChar) || e.KeyChar == (char)Keys.Back);
         }
 
-        private void SetPanel()
+        private void SetPanel() // Sets the current panel to either the start screen(2) gameover screen(1) or the actual game screen(0)
         {
             for (int i = 0; i < panels.Count; i++)
             {
@@ -447,14 +449,14 @@ namespace IsometricSpaceinvaders
             }
         }
 
-        private void GameOverPnl_Paint(object sender, PaintEventArgs e)
+        private void GameOverPnl_Paint(object sender, PaintEventArgs e) // Paints the gameover highscores
         {
             g = e.Graphics;
 
             highscoreManager.DrawHighscores(g, panelSize, score, playerName);
         }
 
-        private void GamePanel_Paint(object sender, PaintEventArgs e)
+        private void GamePanel_Paint(object sender, PaintEventArgs e) // Paint event for the game panel
         {
             g = e.Graphics;
 

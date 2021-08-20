@@ -10,6 +10,9 @@ namespace IsometricSpaceinvaders
 {
     static class UpdatedCollision
     {
+        // Static class so that I do not have to instantiate it everytime I want to run this method
+
+        // A modified collision check method from my game engine which allows two different sized colliders to check for collisions
         public static bool collidersColliding(ColliderComponent colliderOne, ColliderComponent colliderTwo, IsometricGrid2D isometricGridOne, IsometricGrid2D isometricGridTwo)
         {
             if (!colliderOne.Fixed)

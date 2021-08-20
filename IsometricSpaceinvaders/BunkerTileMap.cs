@@ -9,7 +9,7 @@ namespace IsometricSpaceinvaders
 {
     static class BunkerTileMap
     {
-        public static TileMap tileMap()
+        public static TileMap tileMap() // Stores the tilemap for the bunkers (layout on the game grid)
         {
             TileMap Output;
 

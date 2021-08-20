@@ -28,7 +28,7 @@ namespace IsometricSpaceinvaders
 
         bool Left = false;
 
-        public Alien(IsometricGrid2D isometricGrid, List<ColliderComponent> worldBorder, int gridX, int gridY, int alienScore)
+        public Alien(IsometricGrid2D isometricGrid, List<ColliderComponent> worldBorder, int gridX, int gridY, int alienScore) // Constructor class
         {
             gameGrid = isometricGrid;
 
@@ -43,17 +43,17 @@ namespace IsometricSpaceinvaders
             SetTarget();
         }
 
-        public void Render(Graphics g)
+        public void Render(Graphics g) // Draws Alien
         {
             renderComponent.Render(g);
         }
 
-        private void SetTarget()
+        private void SetTarget() // Sets the point that the alien moves down when reached
         {
             target = (gameGrid.TileHeight / 4) * 5;
         }
 
-        public void Move()
+        public void Move() // Moves alien
         {
             Rectangle renderRectReset = renderComponent.renderRect;
 
@@ -80,7 +80,7 @@ namespace IsometricSpaceinvaders
             }
         }
 
-        private void MoveDown()
+        private void MoveDown() // Moves alien down
         {
             renderComponent.renderRect = IsometricMovement.Down(renderComponent.renderRect, gameGrid.TileHeight / 4);
 

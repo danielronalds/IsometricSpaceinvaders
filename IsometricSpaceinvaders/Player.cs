@@ -26,7 +26,7 @@ namespace IsometricSpaceinvaders
 
         public int lives = 3;
 
-        public Player(IsometricGrid2D isometricGrid, List<ColliderComponent>worldBorder, int gridX, int gridY)
+        public Player(IsometricGrid2D isometricGrid, List<ColliderComponent>worldBorder, int gridX, int gridY) // Constructor for the player
         {
             gameGrid = isometricGrid;
 
@@ -39,14 +39,14 @@ namespace IsometricSpaceinvaders
             colliderComponent = new ColliderComponent(playerLocation, gameGrid);
         }
 
-        public void Render(Graphics g)
+        public void Render(Graphics g) // Draws the player
         {
             //colliderComponent.DrawCollider(g, Pens.Red);
 
             renderComponent.Render(g);
         }
 
-        public void MoveLeft()
+        public void MoveLeft() // Moves player left
         {
             Rectangle renderRectReset = renderComponent.renderRect;
 
@@ -68,7 +68,7 @@ namespace IsometricSpaceinvaders
             }
         }
 
-        public void MoveRight()
+        public void MoveRight() // Moves player right
         {
             Rectangle renderRectReset = renderComponent.renderRect;
 

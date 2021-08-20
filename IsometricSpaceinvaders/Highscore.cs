@@ -9,7 +9,7 @@ namespace IsometricSpaceinvaders
     class Highscore
     {
 
-        public Highscore(string name, int score)
+        public Highscore(string name, int score) // Constructor for highscore class
         {
             Name = name;
             Score = score;

@@ -22,7 +22,7 @@ namespace IsometricSpaceinvaders
 
         public int fontY = 50;
 
-        public void InitializeFonts()
+        public void InitializeFonts() // Maps the previous font variables to the desired font
         {
             byte[] fontData = Properties.Resources.FFFFORWA;
             IntPtr fontPtr = System.Runtime.InteropServices.Marshal.AllocCoTaskMem(fontData.Length);
@@ -37,7 +37,7 @@ namespace IsometricSpaceinvaders
             labelFont = new Font(fonts.Families[0], 20.0F);
         }
 
-        public void drawScoreText(Graphics g, int Score, Size Canvas)
+        public void drawScoreText(Graphics g, int Score, Size Canvas) // Draws the score text on the game screen
         {
             Rectangle textRect;
 
@@ -60,7 +60,7 @@ namespace IsometricSpaceinvaders
 
         }
 
-        public void drawLivesText(Graphics g, int lives, Size Canvas)
+        public void drawLivesText(Graphics g, int lives, Size Canvas) // Draws the lives text on the game screen
         {
             Rectangle textRect;
 

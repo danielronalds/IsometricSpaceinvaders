@@ -24,7 +24,7 @@ namespace IsometricSpaceinvaders
 
         int boltSpeed = 6;
 
-        public AlienBolt(int spawnX, int spawnY, IsometricGrid2D colliderSize, IsometricGrid2D tempGameGrid, List<ColliderComponent> worldBorder)
+        public AlienBolt(int spawnX, int spawnY, IsometricGrid2D colliderSize, IsometricGrid2D tempGameGrid, List<ColliderComponent> worldBorder) // Constructor
         {
             boundaries = worldBorder;
 
@@ -37,7 +37,7 @@ namespace IsometricSpaceinvaders
             colliderComponent = new ColliderComponent(spawnX, spawnY, colliderSize);
         }
 
-        public void Render(Graphics g)
+        public void Render(Graphics g) // Draws projectile
         {
             renderComponent.Render(g);
         }
